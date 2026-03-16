@@ -71,7 +71,12 @@ services:
       - kafka
       - elasticsearch
       - mongo
-      
+    environment:
+      bootstrap_servers: kafka:9092
+      group_id: "test"
+      mongo_url: mongo:27017
+      db_name: "army_test"
+      collectiom_name: "events"
 
 volumes:
   kafka_kraft:
