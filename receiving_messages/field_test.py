@@ -1,19 +1,18 @@
-from validation_department import Intel,Attack,Damage
-
+from scemess import Intel,Attack,Damage
 
 
 class FieldTest:
-    def __init__(self,logger):
+    def __init__(self,logger,mongo):
         self.logger = logger
+        self.mongo = mongo
 
     
     def test(self,package):
         if package[0] == "Intel":
             package_validation = Intel(**package[1])
             if package_validation:
-                pass    
-
-
+                self.mongo.send(package[1])
+                    
         elif package[0] == "Attack":
             package_validation = Attack(**package[1])
             if package_validation:
