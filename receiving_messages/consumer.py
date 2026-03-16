@@ -5,11 +5,12 @@ from confluent_kafka import Consumer
 
 
 class KafkaConsumer:
-    def __init__(self,bootstrap_servers,group_id,topic):
+    def __init__(self,bootstrap_servers,group_id,topic,logger):
         self.bootstrap_servers = bootstrap_servers
         self.group_id = group_id
         self.topic = topic
         self.auto.offset.reset = "earliest"
+        self.logger = logger
 
         self.consumer_config = {
             "bootstrap.servers":self.bootstrap_servers,
@@ -21,22 +22,18 @@ class KafkaConsumer:
 
         self.consumer.subscribe([self.topic])
 
-print("Consumer is running and subscribed to orders topic")
+    def consume(self):
+        try:
+            msg = self.consumer.poll(1.0)
+            if msg is None:
+                return None
+        
+            if msg.error():
+                self.logger.error(f"Error: {msg.error()}")
 
-try:
-    while True:
-        msg = consumer.poll(1.0)
-        if msg is None:
-            continue
-        if msg.error():
-            print("Error:", msg.error())
-            continue
+            value = msg.value().decode("utf-8")
+            order = json.loads(value)
+            self.logger.info("The package has been received")
+        except KeyboardInterrupt:
+            print("\n Stopping consumer")
 
-        value = msg.value().decode("utf-8")
-        order = json.loads(value)
-        print(f"Received order: {order['quantity']} x {order['item']} from {order['user']}")
-except KeyboardInterrupt:
-    print("\n Stopping consumer")
-
-finally:
-    consumer.close()
