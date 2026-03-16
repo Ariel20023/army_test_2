@@ -21,6 +21,7 @@ class KafkaConsumer:
 
         self.consumer.subscribe(["Intel","Attack","Damage"])
 
+
     def consume(self):
         try:
             msg = self.consumer.poll(1.0)
@@ -29,13 +30,14 @@ class KafkaConsumer:
         
             if msg.error():
                 self.logger.error(f"Error: {msg.error()}")
+                return None
 
             value = msg.value().decode("utf-8")
             order = json.loads(value)
             topic = msg.topic()
 
             self.logger.info("The package has been received")
-            return {topic,order}
+            return topic,order
         
         except KeyboardInterrupt:
             print("\n Stopping consumer")

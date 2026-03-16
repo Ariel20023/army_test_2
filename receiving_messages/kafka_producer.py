@@ -4,8 +4,8 @@ from confluent_kafka import Producer
 
 
 class KafkaProducer:
-    def __init__(self,bootstrap_servers,topic,logger):
-        self.topic = topic
+    def __init__(self,bootstrap_servers,logger):
+        self.topic = "intel_signals_dlq"
         self.logger = logger
         self.producer = Producer({
             "bootstrap.servers":bootstrap_servers
@@ -18,7 +18,7 @@ class KafkaProducer:
         self.logger.info("sending to kafka")
 
         self.producer.produce(
-                topic="orders",
+                topic=self.topic,
                 value=value,
              )
         self.logger.info("The submission was successful")

@@ -1,8 +1,9 @@
-from pydantic import BaseModle,datetime
+from pydantic import BaseModel
+from datetime import datetime
 
 
 
-class Intel(BaseModle):
+class Intel(BaseModel):
     timestamp:datetime
     signal_id:str
     entity_id:str
@@ -12,14 +13,14 @@ class Intel(BaseModle):
     priority_level:int
 
 
-class Attack(BaseModle):
+class Attack(BaseModel):
     timestamp:datetime
     attack_id:str
     entity_id:str
     weapon_type:str
 
 
-class Damage(BaseModle):
+class Damage(BaseModel):
     timestamp:datetime
     attack_id:str
     entity_id:str
