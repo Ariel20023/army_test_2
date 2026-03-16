@@ -19,31 +19,31 @@ Note: If Elasticsearch is unreachable, the log will fallback to the console (Loc
 
 from elasticsearch import Elasticsearch
 from datetime import datetime
+class Logger:
+    def __init__(self):
+        self.client = Elasticsearch('http://localhost:9200')
+        self.index = "army_test"
 
-# Initialize Elasticsearch client
-# Ensure the host 'localhost' matches your docker-compose configuration
-es = Elasticsearch(['http://localhost:9200'])
 
+    def log_event(self,level, message, extra_info=None):
+        """
+        Sends a structured log to Elasticsearch or falls back to console on failure.
+        """
 
-def log_event(level, message, extra_info=None):
-    """
-    Sends a structured log to Elasticsearch or falls back to console on failure.
-    """
+        # 1. Structure the mandatory fields
+        document = {
+            "timestamp": datetime.utcnow().isoformat(),
+            "level": level.upper(),  # Ensuring levels are always uppercase for consistency
+            "message": message
+        }
 
-    # 1. Structure the mandatory fields
-    document = {
-        "timestamp": datetime.utcnow().isoformat(),
-        "level": level.upper(),  # Ensuring levels are always uppercase for consistency
-        "message": message
-    }
+        # 2. Integrate extra metadata if provided
+        if extra_info:
+            document.update(extra_info)
 
-    # 2. Integrate extra metadata if provided
-    if extra_info:
-        document.update(extra_info)
-
-    try:
-        # 3. Ship to Elasticsearch index 'intel-logs'
-        es.index(index="intel-logs", document=document)
-    except Exception as e:
-        # 4. Fallback mechanism: Print to terminal if the connection fails
-        print(f"⚠️  [LOCAL LOG - {level.upper()}] {message} | Connection Error: {e}")
+        try:
+            # 3. Ship to Elasticsearch index 'intel-logs'
+            self.client.index(index="army_test", document=document)
+        except Exception as e:
+            # 4. Fallback mechanism: Print to terminal if the connection fails
+            print(f"⚠️  [LOCAL LOG - {level.upper()}] {message} | Connection Error: {e}")

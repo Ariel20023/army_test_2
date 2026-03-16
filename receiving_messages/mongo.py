@@ -13,7 +13,7 @@ class Mongo:
     
     def send_to_mongo(self,data):
         self.collection.insert_one(data)
-        self.logger.info("send to mongo")
+        self.logger.log("info","send to mongo")
 
 
 

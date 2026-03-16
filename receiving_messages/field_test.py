@@ -1,13 +1,15 @@
 from scemess import Intel,Attack,Damage
 from pydantic import ValidationError
-from cross_data import CrossData
+
 
 class FieldTest:
-    def __init__(self,logger,mongo,kafka_producer,cross_data):
+    def __init__(self,logger,mongo,kafka_producer,cross_data,Update_from_air_force,attack_update):
         self.logger = logger
         self.mongo = mongo
         self.kafka_producer = kafka_producer
         self.cross_data = cross_data
+        self.Update_from_air_force = Update_from_air_force
+        self.attack_update = attack_update
 
     
     def Validation(self,package):
@@ -29,16 +31,22 @@ class FieldTest:
 
             
 
-        # elif package[0] == "Attack":
-        #     package_validation = Attack.model_validate(package[1])
-        #     if package_validation:
-        #         pass 
-        
+        elif package[0] == "Attack":
+            try:
+                package_validation = Attack.model_validate(package[1])
+            except ValidationError as e:
+                error = e
+                if package_validation is not None:
+                    self.Update_from_air_force.Update_doc(package[1])
 
-        # else:
-        #     package_validation = Damage.model_validate(package[1])
-        #     if package_validation:
-        #         pass 
+                    
+        else:
+            try:
+                package_validation = Damage.model_validate(package[1])
+            except ValidationError as e:
+                error = e
+                if package_validation is not None:
+                    self.attack_update.update(package[1])
 
 
     

@@ -15,12 +15,12 @@ class KafkaProducer:
 
     def send(self,event:dict):
         value = json.dumps(event).encode("utf-8")
-        self.logger.info("sending to kafka")
+        self.logger.log("info","sending to kafka")
 
         self.producer.produce(
                 topic=self.topic,
                 value=value,
              )
-        self.logger.info("The submission was successful")
+        self.logger.log("info","The submission was successful")
 
         

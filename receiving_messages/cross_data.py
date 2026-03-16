@@ -20,14 +20,14 @@ class CrossData:
                     {"$set":data},
                     upsert = True
                 )
-                self.logger.info("update_one to mongo")
+                self.logger.log("info","update_one to mongo")
 
 
         else:
             data["travel_distance"] = 0
             data["priority_level"] = 99
             self.mongo.collection.insert_one(data)
-            self.logger.info("send to mongo")
+            self.logger.log("info","send to mongo")
 
 
 

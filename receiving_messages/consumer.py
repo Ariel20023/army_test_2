@@ -29,14 +29,14 @@ class KafkaConsumer:
                 return None
         
             if msg.error():
-                self.logger.error(f"Error: {msg.error()}")
+                self.logger.log("error",(f"Error: {msg.error()}"))
                 return None
 
             value = msg.value().decode("utf-8")
             order = json.loads(value)
             topic = msg.topic()
 
-            self.logger.info("The package has been received")
+            self.logger.log("info","The package has been received")
             return topic,order
         
         except KeyboardInterrupt:
