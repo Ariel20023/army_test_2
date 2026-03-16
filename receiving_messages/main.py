@@ -33,7 +33,7 @@ def main():
     kafka_producer = KafkaProducer(config.bootstrap_servers,
                                    logger)
     
-    
+
     mongo = Mongo(config.mongo_url,
                   config.db_name,
                   config.collectiom_name,
@@ -46,7 +46,7 @@ def main():
 
     update_from_air_force = UpdateFromAirForce(logger,mongo)
 
-    field_test = FieldTest(mongo,kafka_producer,cross_data,update_from_air_force,attack_update)
+    field_test = FieldTest(logger,mongo,kafka_producer,cross_data,update_from_air_force,attack_update)
 
     #It's the engine that drives everything.
     ocestractor = Ocestractor(field_test)
