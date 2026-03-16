@@ -21,6 +21,8 @@ class FieldTest:
                 package_validation = Intel.model_validate(package[1])
             except ValidationError as e:
                 error = e
+                self.logger.log("error",error)
+
 
             if package_validation is not None:
                 self.cross_data.cross(package[1])
@@ -36,6 +38,8 @@ class FieldTest:
                 package_validation = Attack.model_validate(package[1])
             except ValidationError as e:
                 error = e
+                self.logger.log("error",error)
+
                 if package_validation is not None:
                     self.Update_from_air_force.Update_doc(package[1])
 
@@ -45,6 +49,8 @@ class FieldTest:
                 package_validation = Damage.model_validate(package[1])
             except ValidationError as e:
                 error = e
+                self.logger.log("error",error)
+
                 if package_validation is not None:
                     self.attack_update.update(package[1])
 

@@ -13,6 +13,7 @@ class Ocestractor:
 
         while True:
             package_from_Kafka = self.KafkaConsumer.consume()
+            self.logger.log("info","Received a package from Kafka")
 
             self.FieldTest.Validation(package_from_Kafka)
 

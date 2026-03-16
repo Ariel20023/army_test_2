@@ -23,20 +23,23 @@ def main():
     config = Config()
     config.validate()
 
-    #הכנה לקאפקא קונסומר
+    #Class objects
+
     kafka_consumer = KafkaConsumer(config.bootstrap_servers,
                                    config.group_id,
                                    logger)
-    #הכנה לקאפקא פרודוסר
+    
+
     kafka_producer = KafkaProducer(config.bootstrap_servers,
                                    logger)
-    #הכנה למןנגו
+    
+    
     mongo = Mongo(config.mongo_url,
                   config.db_name,
                   config.collectiom_name,
                   logger)
     
-
+    
     attack_update = AttackUpdate(logger)
 
     cross_data = CrossData(logger,mongo)
@@ -45,7 +48,7 @@ def main():
 
     field_test = FieldTest(mongo,kafka_producer,cross_data,update_from_air_force,attack_update)
 
-    #המנוע שמפעיל את הכול
+    #It's the engine that drives everything.
     ocestractor = Ocestractor(field_test)
     ocestractor.run()
 
