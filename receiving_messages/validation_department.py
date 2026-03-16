@@ -3,7 +3,7 @@ from pydantic import BaseModle,datetime
 
 
 class Intel(BaseModle):
-    timestamp:
+    timestamp:datetime
     signal_id:str
     entity_id:str
     reported_lat:float
@@ -12,14 +12,14 @@ class Intel(BaseModle):
     priority_level:int
 
 
-class b(BaseModle):
+class Attack(BaseModle):
     timestamp:datetime
     attack_id:str
     entity_id:str
     weapon_type:str
 
 
-class c(BaseModle):
+class Damage(BaseModle):
     timestamp:datetime
     attack_id:str
     entity_id:str

@@ -2,15 +2,24 @@ import json
 
 from confluent_kafka import Consumer
 
-consumer_config = {
-    "bootstrap.servers": "localhost:9092",
-    "group.id": "order-tracker",
-    "auto.offset.reset": "earliest"
-}
 
-consumer = Consumer(consumer_config)
 
-consumer.subscribe(["orders"])
+class KafkaConsumer:
+    def __init__(self,bootstrap_servers,group_id,topic):
+        self.bootstrap_servers = bootstrap_servers
+        self.group_id = group_id
+        self.topic = topic
+        self.auto.offset.reset = "earliest"
+
+        self.consumer_config = {
+            "bootstrap.servers":self.bootstrap_servers,
+            "group.id":self.group_id,
+             "auto.offset.reset":self.auto.offset.reset
+        }
+
+        self.consumer = Consumer(self.consumer_config)
+
+        self.consumer.subscribe([self.topic])
 
 print("Consumer is running and subscribed to orders topic")
 
